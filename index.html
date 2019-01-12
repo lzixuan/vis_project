@@ -1,10 +1,65 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
+
 <head>
-    <title>Novel Visualzation</title>
+    <title>中国城市数据可视化分析</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" href="./css/d3-tip.css">
 </head>
+<style>
+    
+</style>
+
 <body>
-    <p>this is only a beginning.</p>
-</body>
+    <div id="regionGraph">
+        <p align="center">城市高铁连通关系</p>
+    </div>
+    <div id="parallel">
+    </div>
+    <div id="scatter">
+        <svg id="scatterSVG">
+        </svg>
+    </div>
+    <div id="select" class="selectors" align="left">
+        高铁网图例：
+        <div id="colorSamples">
+        </div>
+        <div id="select_rail">
+                您在高铁网中选择的城市：
+        </div>
+        <br>
+        <div class="axis_selector">
+            选择横轴数据：
+            <select id="x_axis">
+                <option value="1" selected="selected">GDP(亿)</option>
+                <option value="2">人口(万)</option>
+                <option value="3">财政收入(亿元)</option>
+                <option value="4">支出(亿元)</option>
+                <option value="5">三产比例</option>
+                <option value="6">医院数量</option>
+                <option value="7">执业医师(万)</option>
+                <option value="8">旅客(万)</option>
+                <option value="9">货物(万吨)</option>
+                <option value="10">人均工资(元)</option>
+                <option value="11">商品零售额(亿)</option>
+                <option value="12">进出口额(M$)</option>
+                <option value="13">高校学生(万)</option>
+            </select>
+        </div>
+        <div class="axis_selector">
+            选择纵轴数据：
+            <select id="y_axis">
+                <option value="14">销售面积(万m2)</option>
+                <option value="15" selected="selected">房价(元)</option>
+            </select>
+        </div>
+    </div>
+    <script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src='./js/d3.v3.min.js'></script>
+    <script type="text/javascript" src="./js/d3-tip.js"></script>
+    <script type="text/javascript" src="./js/parallel.js"></script>
+    <script type="text/javascript" src="./js/regionLinks.js"></script>
+    <script type="text/javascript" src="./js/scatter.js"></script>
+
 </html>
