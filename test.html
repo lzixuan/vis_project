@@ -18,19 +18,9 @@
                 </button>
                 <a class="navbar-brand">《射雕英雄传》可视化</a>
             </div>
-            <div class="collapse navbar-collapse" id="example-navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="./test.html">故事推进</a>
-                    </li>
-                    <li>
-                        <a href="./test.html">人物关系</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
-    <div id="progressBarDiv" style="height: 30px;width: 800px;" class="row">
+    <div id="progressBarDiv" style="height: 30px;width: 900px;" class="row">
         <div id="progressBar" class="col-sm-11">
         </div>
         <div id="buttonDiv" class="col-sm-1">
@@ -55,7 +45,7 @@
     var barSVG = d3.select("#progressBar")
         .append("svg")
         .attr("height", 30)
-        .attr("width", 750);
+        .attr("width", 780);
     barSVG.append("text")
         .attr("x", 5)
         .attr("y", 25)
@@ -93,6 +83,7 @@
                 .attr("y", 8)
                 .attr("fill", "white")
                 .attr("stroke", "black")
+                .attr("opacity", 0.7)
                 .attr("stroke-width", 0.5)
                 .attr("class", "progressBarRect")
                 .attr("id", function(){
@@ -101,9 +92,13 @@
         }
         d3.selectAll('.progressBarRect')
             .data(json.chapter);
+        barSVG.append("text")
+            .attr("x", 110 + bookLen * 15)
+            .attr("y", 25)
+            .text("共" + String(bookLen) + "章");
         document.getElementById('chapter_name').innerHTML = '<h2 style="margin-left: 5px">' + json.chapter[0].chap_name + '</h2>';
         d3.select('#rect0')
-            .attr("fill", d3.hsl(0, charNumArray[0] / maxCharNum, 0.5).toString());
+            .attr("fill", d3.hsl(206, charNumArray[0] / maxCharNum, 0.5).toString());
         d3.select('#startButton')
             .on("click", function(d, i){
                 var status = document.getElementById(this.id).className;
@@ -119,15 +114,16 @@
                         }
                         else{
                             d3.selectAll('.progressBarRect')
-                                .attr("opacity", 1);
+                                .attr("opacity", 0.7)
+                                .attr("active", false);
                             progress++;
                             //修改标题
                             document.getElementById('chapter_name').innerHTML = '<h2 style="margin-left: 5px">'
                                 + json.chapter[progress].chap_name + '</h2>';
                             //填充进度条的格子
                             d3.select('#rect'+String(progress))
-                                .attr("fill", d3.hsl(0, charNumArray[progress] / maxCharNum, 0.5).toString());
-                            //插入更新图谱的函数
+                                .attr("fill", d3.hsl(206, charNumArray[progress] / maxCharNum, 0.5).toString());
+                            //插入更新图谱的函数，更新前取消所有高亮
                         }
                     }, 500);
                 }
@@ -141,7 +137,7 @@
         d3.selectAll('.progressBarRect')
             .on("click", function (d, i){
                 //console.log(this.id);
-                console.log(d);
+                //console.log(d);
                 var status = document.getElementById('startButton').className;
                 if (status == "btn btn-danger btn-sm"){
                     alert("请在暂停状态下查看每章详情！");
@@ -154,14 +150,20 @@
                     else{
                         document.getElementById('chapter_name').innerHTML = '<h2 style="margin-left: 5px">'
                             + json.chapter[chapID].chap_name + '</h2>';
-                        d3.selectAll('.progressBarRect')
-                            .attr("opacity", function(q) {
-                                if (q["chap_name"] == d["chap_name"])
-                                    return 1;
-                                else
-                                    return 0.5;
-                            });
-                        //插入高亮选中章内容的函数,chapID为章节号
+                        var active = this.active ? false : true;
+                        if (active){
+                            d3.select('#' + this.id)
+                                .attr("opacity", 1);
+                            this.active = active;
+                            //插入高亮选中章内容的函数,chapID为章节号
+                        }
+                        else{
+                            d3.select('#' + this.id)
+                                .attr("opacity", 0.7);
+                            this.active = active;
+                            //插入取消选中章内容高亮的函数，chapID为章节号
+                        }
+                        
                     }
                 }
             });
